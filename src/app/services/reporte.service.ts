@@ -86,19 +86,39 @@ export class ReporteService {
 
   public export(element: any): void {
     for (let index = 0; index < element.length; index++) {
-      this.arreglo.push([
-        { text: index + 1, margin: 4 },
-        { text: '20231211942 ', margin: 4 },
-        { text: 'ALVAREZ TIERRADENTRO LIANG CAMILO  ', margin: 4 },
-        { text: '4.5 ', margin: 4 },
-        { text: '0 ', margin: 4 },
-        { text: '4.5 ', margin: 4 },
-        { text: '0 ', margin: 4 },
-        { text: '5.0 ', margin: 4 },
-        { text: '2 ', margin: 4 },
-        { text: ' ', margin: 4 },
-        { text: '4.7 ', margin: 4 },
-      ]);
+      if (index == 20) {
+        this.arreglo.push([
+          { margin: 25, border: [false, false, false, false] },
+          { margin: 0, border: [false, false, false, false] },
+          { margin: 0, border: [false, false, false, false] },
+          { margin: 0, border: [false, false, false, false] },
+          { margin: 0, border: [false, false, false, false] },
+          { margin: 0, border: [false, false, false, false] },
+          { margin: 0, border: [false, false, false, false] },
+          { margin: 0, border: [false, false, false, false] },
+          { margin: 0, border: [false, false, false, false] },
+          { margin: 0, border: [false, false, false, false] },
+          { margin: 0, border: [false, false, false, false] },
+        ]);
+      } else {
+        this.arreglo.push([
+          { text: index + 1, margin: 4, border: [true, true, true, true] },
+          { text: '20231211942 ', margin: 4, border: [true, true, true, true] },
+          {
+            text: 'ALVAREZ TIERRADENTRO LIANG CAMILO  ',
+            margin: 4,
+            border: [true, true, true, true],
+          },
+          { text: '4.5 ', margin: 4, border: [true, true, true, true] },
+          { text: '0 ', margin: 4, border: [true, true, true, true] },
+          { text: '4.5 ', margin: 4, border: [true, true, true, true] },
+          { text: '0 ', margin: 4, border: [true, true, true, true] },
+          { text: '5.0 ', margin: 4, border: [true, true, true, true] },
+          { text: '2 ', margin: 4, border: [true, true, true, true] },
+          { text: ' ', margin: 4, border: [true, true, true, true] },
+          { text: '4.7 ', margin: 4, border: [true, true, true, true] },
+        ]);
+      }
     }
 
     const docDefinition: any = {
@@ -291,7 +311,7 @@ export class ReporteService {
           table: {
             dontBreakRows: true,
             unbreakable: true,
-            widths: [15, 60, 160, 30, 30, 30, 30, 30, 30, 25, 'auto'],
+            widths: [20, 60, 160, 30, 30, 30, 30, 30, 30, 25, 'auto'],
             heights: 20,
             headerRows: 2,
             body: [
@@ -424,12 +444,18 @@ export class ReporteService {
               }) */
               //console.log(JSON.stringify(this.arreglo)),
               /* this.arreglo.map((x: any) => console.log(JSON.stringify(x))), */
-              ...this.arreglo.map((row: any[]) => row.map((cell: { text: any; }) => ({ text: cell.text, margin: 4 }))),
+              ...this.arreglo.map((row: any[]) =>
+                row.map((cell: { text: any; border: any; margin: any }) => ({
+                  text: cell.text,
+                  margin: cell.margin,
+                  border: cell.border,
+                }))
+              ),
             ],
           },
         },
         {
-          absolutePosition: { x: 40, y: 650 },
+          absolutePosition: { x: 40, y: 675 },
           table: {
             widths: ['*', '*'],
             heights: [100],
