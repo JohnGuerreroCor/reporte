@@ -85,7 +85,8 @@ export class ReporteService {
   }
 
   public export(element: any): void {
-    for (let index = 0; index < element.length; index++) {
+    let count: number = 1;
+    for (let index = 0; index < element.length + 1; index++) {
       if (index == 20) {
         this.arreglo.push([
           { margin: 25, border: [false, false, false, false] },
@@ -102,7 +103,7 @@ export class ReporteService {
         ]);
       } else {
         this.arreglo.push([
-          { text: index + 1, margin: 4, border: [true, true, true, true] },
+          { text: count, margin: 4, border: [true, true, true, true] },
           { text: '20231211942 ', margin: 4, border: [true, true, true, true] },
           {
             text: 'ALVAREZ TIERRADENTRO LIANG CAMILO  ',
@@ -118,6 +119,7 @@ export class ReporteService {
           { text: ' ', margin: 4, border: [true, true, true, true] },
           { text: '4.7 ', margin: 4, border: [true, true, true, true] },
         ]);
+        count = count +1
       }
     }
 
