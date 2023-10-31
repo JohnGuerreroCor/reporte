@@ -1,11 +1,10 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
 import * as pdfMake from 'pdfmake/build/pdfmake';
 import * as pdfFonts from 'pdfmake/build/vfs_fonts';
 import { DatePipe } from '@angular/common';
+import { HttpClient } from '@angular/common/http';
 
 (<any>pdfMake).vfs = pdfFonts.pdfMake.vfs;
-
 @Injectable({
   providedIn: 'root',
 })
@@ -16,7 +15,12 @@ export class ReporteService {
   pagina: any;
   paginas: any;
   fechaRegistro = this.datePipe.transform(Date.now(), 'dd-MM-yyyy h:mm a');
-  arreglo: any = [];
+  arreglo20: any = [];
+  arreglo40: any = [];
+  arreglo60: any = [];
+  fase1: boolean = false;
+  fase2: boolean = false;
+  fase3: boolean = false;
 
   constructor(private http: HttpClient, private datePipe: DatePipe) {
     this.hedaerBase64();
@@ -84,45 +88,38 @@ export class ReporteService {
     });
   }
 
-  public export(element: any): void {
-    let count: number = 1;
-    for (let index = 0; index < element.length + 1; index++) {
-      if (index == 20) {
-        this.arreglo.push([
-          { margin: 25, border: [false, false, false, false] },
-          { margin: 0, border: [false, false, false, false] },
-          { margin: 0, border: [false, false, false, false] },
-          { margin: 0, border: [false, false, false, false] },
-          { margin: 0, border: [false, false, false, false] },
-          { margin: 0, border: [false, false, false, false] },
-          { margin: 0, border: [false, false, false, false] },
-          { margin: 0, border: [false, false, false, false] },
-          { margin: 0, border: [false, false, false, false] },
-          { margin: 0, border: [false, false, false, false] },
-          { margin: 0, border: [false, false, false, false] },
+  public export(element: any, data: any[]): void {
+    for (let index = 0; index < data.length; index++) {
+      if (index < 21) {
+        this.arreglo20.push([
+          { text: index + 1 },
+          { text: data[index].est_codigo },
+          { text: data[index].per_apellido + ' ' + data[index].per_apellido },
+          { text: data[index].cursoNota.cun_nota },
+          { text: data[index].cursoNota.cun_fallas },
+          { text: data[index].cursoNota.cun_observacion },
+        ]);
+      } else if (index >= 21 && index < 45) {
+        this.arreglo40.push([
+          { text: index + 1 },
+          { text: data[index].est_codigo },
+          { text: data[index].per_apellido + ' ' + data[index].per_apellido },
+          { text: data[index].cursoNota.cun_nota },
+          { text: data[index].cursoNota.cun_fallas },
+          { text: data[index].cursoNota.cun_observacion },
         ]);
       } else {
-        this.arreglo.push([
-          { text: count, margin: 4, border: [true, true, true, true] },
-          { text: '20231211942 ', margin: 4, border: [true, true, true, true] },
-          {
-            text: 'ALVAREZ TIERRADENTRO LIANG CAMILO  ',
-            margin: 4,
-            border: [true, true, true, true],
-          },
-          { text: '4.5 ', margin: 4, border: [true, true, true, true] },
-          { text: '0 ', margin: 4, border: [true, true, true, true] },
-          { text: '4.5 ', margin: 4, border: [true, true, true, true] },
-          { text: '0 ', margin: 4, border: [true, true, true, true] },
-          { text: '5.0 ', margin: 4, border: [true, true, true, true] },
-          { text: '2 ', margin: 4, border: [true, true, true, true] },
-          { text: ' ', margin: 4, border: [true, true, true, true] },
-          { text: '4.7 ', margin: 4, border: [true, true, true, true] },
+        this.arreglo60.push([
+          { text: index + 1 },
+          { text: data[index].est_codigo },
+          { text: data[index].per_apellido + ' ' + data[index].per_apellido },
+          { text: data[index].cursoNota.cun_nota },
+          { text: data[index].cursoNota.cun_fallas },
+          { text: data[index].cursoNota.cun_observacion },
         ]);
-        count = count +1
       }
     }
-
+    console.log('Arreglo: ', this.arreglo20);
     const docDefinition: any = {
       background: [
         {
@@ -134,13 +131,7 @@ export class ReporteService {
         },
       ],
       pageMargins: [10, 100, 10, 40],
-      /*  watermark: {
-        text: 'test watermark',
-        color: 'blue',
-        opacity: 0.3,
-        bold: true,
-        italics: false,
-      }, */
+
       header: {
         margin: [10, 10, 10, 10],
         style: 'header',
@@ -159,7 +150,7 @@ export class ReporteService {
               },
               {
                 border: [false, false, false, false],
-                text: 'Reporte Notas',
+                text: 'Notas Parciales',
                 fillColor: '#8F141B',
                 width: 200,
                 bold: true,
@@ -234,26 +225,21 @@ export class ReporteService {
           },
         };
       },
-      //currentPage.toString() + ' de ' + pageCount;
-      /* footer: {
-        margin: [10, 10, 10, 10],
-        style: 'footer',
-      },
- */
+
       content: [
         {
-          margin: [50, 0, 50, 10],
+          margin: [50, 10, 50, 10],
           columns: [
             {
               // auto-sized columns have their widths based on their content
               width: '*',
-              text: 'Docente: ' + 'SOTO FLECHAS JUAN LISANDRO',
+              text: 'Docente: ' + element.docente,
             },
             {
               // star-sized columns fill the remaining space
               // if there's more than one star-column, available width is divided equally
               width: '*',
-              text: 'Grupo: ' + '01',
+              text: 'Grupo: ' + element.grupo,
               margin: [110, 0, 0, 0],
             },
           ],
@@ -266,39 +252,24 @@ export class ReporteService {
             {
               // auto-sized columns have their widths based on their content
               width: '*',
-              text: 'Curso: ' + 'TEORIA SOCIAL I-176201',
+              text:
+                'Curso: ' +
+                element.curso +
+                '\n\n' +
+                'Evaluacion: ' +
+                element.evaluacion,
             },
             {
               // star-sized columns fill the remaining space
               // if there's more than one star-column, available width is divided equally
               width: '*',
-              text: 'Calendario: ' + '20231A',
+              text:
+                'Calendario: ' +
+                element.calendario +
+                '\n\n' +
+                'Sede: ' +
+                element.sede,
               margin: [110, 0, 0, 0],
-            },
-          ],
-          // optional space between columns
-          columnGap: 10,
-        },
-        {
-          margin: [50, 0, 50, 0],
-          columns: [
-            {
-              columns: [
-                { text: 'Evaluaciones: ' },
-                { text: 'Corte 01 [30.0%]', alignment: 'center', fontSize: 11 },
-                { text: 'Corte 02 [30.0%]', alignment: 'center', fontSize: 11 },
-                { text: 'Corte 03 [40.0%]', alignment: 'center', fontSize: 11 },
-              ],
-              // auto-sized columns have their widths based on their content
-              /* width: '*',
-              text: 'Programa: ' + 'ANTROPOLOGIA', */
-            },
-            {
-              // star-sized columns fill the remaining space
-              // if there's more than one star-column, available width is divided equally
-              width: '*',
-              text: 'Sede: ' + 'NEIVA',
-              margin: [20, 0, 0, 0],
             },
           ],
           // optional space between columns
@@ -313,149 +284,191 @@ export class ReporteService {
           table: {
             dontBreakRows: true,
             unbreakable: true,
-            widths: [20, 60, 160, 30, 30, 30, 30, 30, 30, 25, 'auto'],
+            widths: [20, 70, '*', 30, 30, '*'],
             heights: 20,
             headerRows: 2,
             body: [
               [
                 {
-                  rowSpan: 2,
                   text: '#',
                   fillColor: '#8F141B',
                   color: 'white',
                   bold: true,
-                  margin: [0, 15, 0, 0],
+                  margin: [0, 10, 0, 10],
                 },
                 {
-                  rowSpan: 2,
                   text: 'Código',
-                  fillColor: '#8F141B',
-                  color: 'white',
-                  bold: true,
-                  margin: [0, 15, 0, 0],
-                },
-                {
-                  rowSpan: 2,
-                  text: 'Nombre',
-                  fillColor: '#8F141B',
-                  color: 'white',
-                  bold: true,
-                  margin: [0, 15, 0, 0],
-                },
-                {
-                  colSpan: 2,
-                  text: 'Corte 01 [30.0%]',
-                  fillColor: '#8F141B',
-                  color: 'white',
-                  bold: true,
-                  margin: [0, 3, 0, 3],
-                },
-                {},
-                {
-                  colSpan: 2,
-                  text: 'Corte 02 [30.0%]',
-                  fillColor: '#8F141B',
-                  color: 'white',
-                  bold: true,
-                  margin: [0, 3, 0, 3],
-                },
-                {},
-                {
-                  colSpan: 2,
-                  text: 'Corte 03 [40.0%]',
-                  fillColor: '#8F141B',
-                  color: 'white',
-                  bold: true,
-                  margin: [0, 3, 0, 3],
-                },
-                {},
-                {
-                  rowSpan: 2,
-                  text: 'Perdio Fallas',
                   fillColor: '#8F141B',
                   color: 'white',
                   bold: true,
                   margin: [0, 10, 0, 0],
                 },
                 {
-                  rowSpan: 2,
-                  text: 'Definitiva',
+                  text: 'Nombre',
                   fillColor: '#8F141B',
                   color: 'white',
                   bold: true,
-                  margin: [0, 15, 0, 0],
+                  margin: [0, 10, 0, 0],
+                },
+                {
+                  text: 'Nota',
+                  fillColor: '#8F141B',
+                  color: 'white',
+                  bold: true,
+                  margin: [0, 10, 0, 0],
+                },
+                {
+                  text: 'Fallas',
+                  fillColor: '#8F141B',
+                  color: 'white',
+                  bold: true,
+                  margin: [0, 10, 0, 0],
+                },
+                {
+                  text: 'Observación',
+                  fillColor: '#8F141B',
+                  color: 'white',
+                  bold: true,
+                  margin: [0, 10, 0, 0],
                 },
               ],
-              [
-                '',
-                '',
-                '',
-                {
-                  text: 'Nota',
-                  fillColor: '#8F141B',
-                  color: 'white',
-                  bold: true,
-                  margin: 3,
-                },
-                {
-                  text: 'Fallas',
-                  fillColor: '#8F141B',
-                  color: 'white',
-                  bold: true,
-                  margin: 3,
-                },
-                {
-                  text: 'Nota',
-                  fillColor: '#8F141B',
-                  color: 'white',
-                  bold: true,
-                  margin: 3,
-                },
-                {
-                  text: 'Fallas',
-                  fillColor: '#8F141B',
-                  color: 'white',
-                  bold: true,
-                  margin: 3,
-                },
-                {
-                  text: 'Nota',
-                  fillColor: '#8F141B',
-                  color: 'white',
-                  bold: true,
-                  margin: 3,
-                },
-                {
-                  text: 'Fallas',
-                  fillColor: '#8F141B',
-                  color: 'white',
-                  bold: true,
-                  margin: 3,
-                },
-                '',
-                '',
-              ],
-              /* this.arreglo[0],
-              this.arreglo[1], */
-              /* this.arreglo.forEach((element: any) => {
-                console.log(element);
-                
-              }), */
-              /* this.arreglo.array.forEach(element => {
-                
-              }) */
-              //console.log(JSON.stringify(this.arreglo)),
-              /* this.arreglo.map((x: any) => console.log(JSON.stringify(x))), */
-              ...this.arreglo.map((row: any[]) =>
-                row.map((cell: { text: any; border: any; margin: any }) => ({
+              ...this.arreglo20.map((row: any[]) =>
+                row.map((cell: { text: any }) => ({
                   text: cell.text,
-                  margin: cell.margin,
-                  border: cell.border,
+                  margin: 4,
                 }))
               ),
             ],
           },
         },
+        this.arreglo40.length > 0
+          ? {
+              style: 'tableSecond',
+              table: {
+                dontBreakRows: true,
+                unbreakable: true,
+                widths: [20, 70, '*', 30, 30, '*'],
+                heights: 20,
+                headerRows: 2,
+                body: [
+                  [
+                    {
+                      text: '#',
+                      fillColor: '#8F141B',
+                      color: 'white',
+                      bold: true,
+                      margin: [0, 10, 0, 10],
+                    },
+                    {
+                      text: 'Código',
+                      fillColor: '#8F141B',
+                      color: 'white',
+                      bold: true,
+                      margin: [0, 10, 0, 0],
+                    },
+                    {
+                      text: 'Nombre',
+                      fillColor: '#8F141B',
+                      color: 'white',
+                      bold: true,
+                      margin: [0, 10, 0, 0],
+                    },
+                    {
+                      text: 'Nota',
+                      fillColor: '#8F141B',
+                      color: 'white',
+                      bold: true,
+                      margin: [0, 10, 0, 0],
+                    },
+                    {
+                      text: 'Fallas',
+                      fillColor: '#8F141B',
+                      color: 'white',
+                      bold: true,
+                      margin: [0, 10, 0, 0],
+                    },
+                    {
+                      text: 'Observación',
+                      fillColor: '#8F141B',
+                      color: 'white',
+                      bold: true,
+                      margin: [0, 10, 0, 0],
+                    },
+                  ],
+                  ...this.arreglo40.map((row: any[]) =>
+                    row.map((cell: { text: any }) => ({
+                      text: cell.text,
+                      margin: 4,
+                    }))
+                  ),
+                ],
+              },
+            }
+          : null, // No agregar la segunda tabla si this.arreglo40 está vacío
+          this.arreglo60.length > 0
+          ? {
+              style: 'tableThird',
+              table: {
+                dontBreakRows: true,
+                unbreakable: true,
+                widths: [20, 70, '*', 30, 30, '*'],
+                heights: 20,
+                headerRows: 2,
+                body: [
+                  [
+                    {
+                      text: '#',
+                      fillColor: '#8F141B',
+                      color: 'white',
+                      bold: true,
+                      margin: [0, 10, 0, 10],
+                    },
+                    {
+                      text: 'Código',
+                      fillColor: '#8F141B',
+                      color: 'white',
+                      bold: true,
+                      margin: [0, 10, 0, 0],
+                    },
+                    {
+                      text: 'Nombre',
+                      fillColor: '#8F141B',
+                      color: 'white',
+                      bold: true,
+                      margin: [0, 10, 0, 0],
+                    },
+                    {
+                      text: 'Nota',
+                      fillColor: '#8F141B',
+                      color: 'white',
+                      bold: true,
+                      margin: [0, 10, 0, 0],
+                    },
+                    {
+                      text: 'Fallas',
+                      fillColor: '#8F141B',
+                      color: 'white',
+                      bold: true,
+                      margin: [0, 10, 0, 0],
+                    },
+                    {
+                      text: 'Observación',
+                      fillColor: '#8F141B',
+                      color: 'white',
+                      bold: true,
+                      margin: [0, 10, 0, 0],
+                    },
+                  ],
+                  ...this.arreglo60.map((row: any[]) =>
+                    row.map((cell: { text: any }) => ({
+                      text: cell.text,
+                      margin: 4,
+                    }))
+                  ),
+                ],
+              },
+            }
+          : null, // No agregar la segunda tabla si this.arreglo40 está vacío
         {
           absolutePosition: { x: 40, y: 675 },
           table: {
@@ -503,13 +516,25 @@ export class ReporteService {
           alignment: 'center',
         },
         tableInit: {
-          margin: [0, 20, 0, 10],
+          margin: [0, 0, 0, 10],
+          fontSize: 8,
+          alignment: 'center',
+        },
+        tableSecond: {
+          margin: [0, 40, 0, 10],
+          fontSize: 8,
+          alignment: 'center',
+        },
+        tableThird: {
+          margin: [0, 80, 0, 10],
           fontSize: 8,
           alignment: 'center',
         },
       },
     };
 
-    pdfMake.createPdf(docDefinition).download('Reporte Notas.pdf');
+    pdfMake
+      .createPdf(docDefinition)
+      .download('Reporte Notas ' + element.evaluacion + '.pdf');
   }
 }
