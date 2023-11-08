@@ -9,7 +9,7 @@ import { HttpClient } from '@angular/common/http';
 @Injectable({
   providedIn: 'root',
 })
-export class ReporteService {
+export class ReporteGeneralService {
   header: any;
   footer: any;
   background: any;
@@ -94,29 +94,44 @@ export class ReporteService {
       if (index < 21) {
         this.arreglo20.push([
           { text: index + 1 },
-          { text: data[index].est_codigo },
-          { text: data[index].per_apellido + ' ' + data[index].per_apellido },
-          { text: data[index].cursoNota.cun_nota },
-          { text: data[index].cursoNota.cun_fallas },
-          { text: data[index].cursoNota.cun_observacion },
+          { text: data[index].codigo },
+          { text: data[index].nombre },
+          { text: data[index].notas[0] },
+          { text: data[index].fallas[0] },
+          { text: data[index].notas[1] },
+          { text: data[index].fallas[1] },
+          { text: data[index].notas[2] },
+          { text: data[index].fallas[2] },
+          { text: data[index].perdio_fallas },
+          { text: data[index].definitiva },
         ]);
       } else if (index >= 21 && index < 45) {
         this.arreglo40.push([
           { text: index + 1 },
-          { text: data[index].est_codigo },
-          { text: data[index].per_apellido + ' ' + data[index].per_apellido },
-          { text: data[index].cursoNota.cun_nota },
-          { text: data[index].cursoNota.cun_fallas },
-          { text: data[index].cursoNota.cun_observacion },
+          { text: data[index].codigo },
+          { text: data[index].nombre },
+          { text: data[index].notas[0] },
+          { text: data[index].fallas[0] },
+          { text: data[index].notas[1] },
+          { text: data[index].fallas[1] },
+          { text: data[index].notas[2] },
+          { text: data[index].fallas[2] },
+          { text: data[index].perdio_fallas },
+          { text: data[index].definitiva },
         ]);
       } else {
         this.arreglo60.push([
           { text: index + 1 },
-          { text: data[index].est_codigo },
-          { text: data[index].per_apellido + ' ' + data[index].per_apellido },
-          { text: data[index].cursoNota.cun_nota },
-          { text: data[index].cursoNota.cun_fallas },
-          { text: data[index].cursoNota.cun_observacion },
+          { text: data[index].codigo },
+          { text: data[index].nombre },
+          { text: data[index].notas[0] },
+          { text: data[index].fallas[0] },
+          { text: data[index].notas[1] },
+          { text: data[index].fallas[1] },
+          { text: data[index].notas[2] },
+          { text: data[index].fallas[2] },
+          { text: data[index].perdio_fallas },
+          { text: data[index].definitiva },
         ]);
       }
     }
@@ -234,13 +249,13 @@ export class ReporteService {
             {
               // auto-sized columns have their widths based on their content
               width: '*',
-              text: 'Docente: ' + element.docente,
+              text: 'Docente: ' + 'SOTO FLECHAS JUAN LISANDRO',
             },
             {
               // star-sized columns fill the remaining space
               // if there's more than one star-column, available width is divided equally
               width: '*',
-              text: 'Grupo: ' + element.grupo,
+              text: 'Grupo: ' + '01',
               margin: [110, 0, 0, 0],
             },
           ],
@@ -253,24 +268,39 @@ export class ReporteService {
             {
               // auto-sized columns have their widths based on their content
               width: '*',
-              text:
-                'Curso: ' +
-                element.curso +
-                '\n\n' +
-                'Evaluacion: ' +
-                element.evaluacion,
+              text: 'Curso: ' + 'TEORIA SOCIAL I-176201',
             },
             {
               // star-sized columns fill the remaining space
               // if there's more than one star-column, available width is divided equally
               width: '*',
-              text:
-                'Calendario: ' +
-                element.calendario +
-                '\n\n' +
-                'Sede: ' +
-                element.sede,
+              text: 'Calendario: ' + '20231A',
               margin: [110, 0, 0, 0],
+            },
+          ],
+          // optional space between columns
+          columnGap: 10,
+        },
+        {
+          margin: [50, 0, 50, 20],
+          columns: [
+            {
+              columns: [
+                { text: 'Evaluaciones: ' },
+                { text: 'Corte 01 [30.0%]', alignment: 'center', fontSize: 11 },
+                { text: 'Corte 02 [30.0%]', alignment: 'center', fontSize: 11 },
+                { text: 'Corte 03 [40.0%]', alignment: 'center', fontSize: 11 },
+              ],
+              // auto-sized columns have their widths based on their content
+              /* width: '*',
+              text: 'Programa: ' + 'ANTROPOLOGIA', */
+            },
+            {
+              // star-sized columns fill the remaining space
+              // if there's more than one star-column, available width is divided equally
+              width: '*',
+              text: 'Sede: ' + 'NEIVA',
+              margin: [20, 0, 0, 0],
             },
           ],
           // optional space between columns
@@ -285,53 +315,127 @@ export class ReporteService {
           table: {
             dontBreakRows: true,
             unbreakable: true,
-            widths: [20, 70, '*', 30, 30, '*'],
+            widths: [15, 60, 160, 30, 30, 30, 30, 30, 30, 25, 'auto'],
             heights: 20,
             headerRows: 2,
             body: [
               [
                 {
+                  rowSpan: 2,
                   text: '#',
                   fillColor: '#8F141B',
                   color: 'white',
                   bold: true,
-                  margin: [0, 10, 0, 10],
+                  margin: [0, 15, 0, 0],
                 },
                 {
+                  rowSpan: 2,
                   text: 'Código',
                   fillColor: '#8F141B',
                   color: 'white',
                   bold: true,
-                  margin: [0, 10, 0, 0],
+                  margin: [0, 15, 0, 0],
                 },
                 {
+                  rowSpan: 2,
                   text: 'Nombre',
+                  fillColor: '#8F141B',
+                  color: 'white',
+                  bold: true,
+                  margin: [0, 15, 0, 0],
+                },
+                {
+                  colSpan: 2,
+                  text: 'Corte 01 [30.0%]',
+                  fillColor: '#8F141B',
+                  color: 'white',
+                  bold: true,
+                  margin: [0, 3, 0, 3],
+                },
+                {},
+                {
+                  colSpan: 2,
+                  text: 'Corte 02 [30.0%]',
+                  fillColor: '#8F141B',
+                  color: 'white',
+                  bold: true,
+                  margin: [0, 3, 0, 3],
+                },
+                {},
+                {
+                  colSpan: 2,
+                  text: 'Corte 03 [40.0%]',
+                  fillColor: '#8F141B',
+                  color: 'white',
+                  bold: true,
+                  margin: [0, 3, 0, 3],
+                },
+                {},
+                {
+                  rowSpan: 2,
+                  text: 'Perdio Fallas',
                   fillColor: '#8F141B',
                   color: 'white',
                   bold: true,
                   margin: [0, 10, 0, 0],
                 },
+                {
+                  rowSpan: 2,
+                  text: 'Definitiva',
+                  fillColor: '#8F141B',
+                  color: 'white',
+                  bold: true,
+                  margin: [0, 15, 0, 0],
+                },
+              ],
+              [
+                '',
+                '',
+                '',
                 {
                   text: 'Nota',
                   fillColor: '#8F141B',
                   color: 'white',
                   bold: true,
-                  margin: [0, 10, 0, 0],
+                  margin: 3,
                 },
                 {
                   text: 'Fallas',
                   fillColor: '#8F141B',
                   color: 'white',
                   bold: true,
-                  margin: [0, 10, 0, 0],
+                  margin: 3,
                 },
                 {
-                  text: 'Observación',
+                  text: 'Nota',
                   fillColor: '#8F141B',
                   color: 'white',
                   bold: true,
-                  margin: [0, 10, 0, 0],
+                  margin: 3,
                 },
+                {
+                  text: 'Fallas',
+                  fillColor: '#8F141B',
+                  color: 'white',
+                  bold: true,
+                  margin: 3,
+                },
+                {
+                  text: 'Nota',
+                  fillColor: '#8F141B',
+                  color: 'white',
+                  bold: true,
+                  margin: 3,
+                },
+                {
+                  text: 'Fallas',
+                  fillColor: '#8F141B',
+                  color: 'white',
+                  bold: true,
+                  margin: 3,
+                },
+                '',
+                '',
               ],
               ...this.arreglo20.map((row: any[]) =>
                 row.map((cell: { text: any }) => ({
@@ -348,53 +452,127 @@ export class ReporteService {
               table: {
                 dontBreakRows: true,
                 unbreakable: true,
-                widths: [20, 70, '*', 30, 30, '*'],
+                widths: [15, 60, 160, 30, 30, 30, 30, 30, 30, 25, 'auto'],
                 heights: 20,
                 headerRows: 2,
                 body: [
                   [
                     {
+                      rowSpan: 2,
                       text: '#',
                       fillColor: '#8F141B',
                       color: 'white',
                       bold: true,
-                      margin: [0, 10, 0, 10],
+                      margin: [0, 15, 0, 0],
                     },
                     {
+                      rowSpan: 2,
                       text: 'Código',
                       fillColor: '#8F141B',
                       color: 'white',
                       bold: true,
-                      margin: [0, 10, 0, 0],
+                      margin: [0, 15, 0, 0],
                     },
                     {
+                      rowSpan: 2,
                       text: 'Nombre',
+                      fillColor: '#8F141B',
+                      color: 'white',
+                      bold: true,
+                      margin: [0, 15, 0, 0],
+                    },
+                    {
+                      colSpan: 2,
+                      text: 'Corte 01 [30.0%]',
+                      fillColor: '#8F141B',
+                      color: 'white',
+                      bold: true,
+                      margin: [0, 3, 0, 3],
+                    },
+                    {},
+                    {
+                      colSpan: 2,
+                      text: 'Corte 02 [30.0%]',
+                      fillColor: '#8F141B',
+                      color: 'white',
+                      bold: true,
+                      margin: [0, 3, 0, 3],
+                    },
+                    {},
+                    {
+                      colSpan: 2,
+                      text: 'Corte 03 [40.0%]',
+                      fillColor: '#8F141B',
+                      color: 'white',
+                      bold: true,
+                      margin: [0, 3, 0, 3],
+                    },
+                    {},
+                    {
+                      rowSpan: 2,
+                      text: 'Perdio Fallas',
                       fillColor: '#8F141B',
                       color: 'white',
                       bold: true,
                       margin: [0, 10, 0, 0],
                     },
+                    {
+                      rowSpan: 2,
+                      text: 'Definitiva',
+                      fillColor: '#8F141B',
+                      color: 'white',
+                      bold: true,
+                      margin: [0, 15, 0, 0],
+                    },
+                  ],
+                  [
+                    '',
+                    '',
+                    '',
                     {
                       text: 'Nota',
                       fillColor: '#8F141B',
                       color: 'white',
                       bold: true,
-                      margin: [0, 10, 0, 0],
+                      margin: 3,
                     },
                     {
                       text: 'Fallas',
                       fillColor: '#8F141B',
                       color: 'white',
                       bold: true,
-                      margin: [0, 10, 0, 0],
+                      margin: 3,
                     },
                     {
-                      text: 'Observación',
+                      text: 'Nota',
                       fillColor: '#8F141B',
                       color: 'white',
                       bold: true,
-                      margin: [0, 10, 0, 0],
+                      margin: 3,
                     },
+                    {
+                      text: 'Fallas',
+                      fillColor: '#8F141B',
+                      color: 'white',
+                      bold: true,
+                      margin: 3,
+                    },
+                    {
+                      text: 'Nota',
+                      fillColor: '#8F141B',
+                      color: 'white',
+                      bold: true,
+                      margin: 3,
+                    },
+                    {
+                      text: 'Fallas',
+                      fillColor: '#8F141B',
+                      color: 'white',
+                      bold: true,
+                      margin: 3,
+                    },
+                    '',
+                    '',
                   ],
                   ...this.arreglo40.map((row: any[]) =>
                     row.map((cell: { text: any }) => ({
@@ -406,59 +584,133 @@ export class ReporteService {
               },
             }
           : null, // No agregar la segunda tabla si this.arreglo40 está vacío
-          this.arreglo60.length > 0
+        this.arreglo60.length > 0
           ? {
               style: 'tableThird',
               table: {
                 dontBreakRows: true,
                 unbreakable: true,
-                widths: [20, 70, '*', 30, 30, '*'],
+                widths: [15, 60, 160, 30, 30, 30, 30, 30, 30, 25, 'auto'],
                 heights: 20,
                 headerRows: 2,
                 body: [
                   [
                     {
+                      rowSpan: 2,
                       text: '#',
                       fillColor: '#8F141B',
                       color: 'white',
                       bold: true,
-                      margin: [0, 10, 0, 10],
+                      margin: [0, 15, 0, 0],
                     },
                     {
+                      rowSpan: 2,
                       text: 'Código',
                       fillColor: '#8F141B',
                       color: 'white',
                       bold: true,
-                      margin: [0, 10, 0, 0],
+                      margin: [0, 15, 0, 0],
                     },
                     {
+                      rowSpan: 2,
                       text: 'Nombre',
+                      fillColor: '#8F141B',
+                      color: 'white',
+                      bold: true,
+                      margin: [0, 15, 0, 0],
+                    },
+                    {
+                      colSpan: 2,
+                      text: 'Corte 01 [30.0%]',
+                      fillColor: '#8F141B',
+                      color: 'white',
+                      bold: true,
+                      margin: [0, 3, 0, 3],
+                    },
+                    {},
+                    {
+                      colSpan: 2,
+                      text: 'Corte 02 [30.0%]',
+                      fillColor: '#8F141B',
+                      color: 'white',
+                      bold: true,
+                      margin: [0, 3, 0, 3],
+                    },
+                    {},
+                    {
+                      colSpan: 2,
+                      text: 'Corte 03 [40.0%]',
+                      fillColor: '#8F141B',
+                      color: 'white',
+                      bold: true,
+                      margin: [0, 3, 0, 3],
+                    },
+                    {},
+                    {
+                      rowSpan: 2,
+                      text: 'Perdio Fallas',
                       fillColor: '#8F141B',
                       color: 'white',
                       bold: true,
                       margin: [0, 10, 0, 0],
                     },
+                    {
+                      rowSpan: 2,
+                      text: 'Definitiva',
+                      fillColor: '#8F141B',
+                      color: 'white',
+                      bold: true,
+                      margin: [0, 15, 0, 0],
+                    },
+                  ],
+                  [
+                    '',
+                    '',
+                    '',
                     {
                       text: 'Nota',
                       fillColor: '#8F141B',
                       color: 'white',
                       bold: true,
-                      margin: [0, 10, 0, 0],
+                      margin: 3,
                     },
                     {
                       text: 'Fallas',
                       fillColor: '#8F141B',
                       color: 'white',
                       bold: true,
-                      margin: [0, 10, 0, 0],
+                      margin: 3,
                     },
                     {
-                      text: 'Observación',
+                      text: 'Nota',
                       fillColor: '#8F141B',
                       color: 'white',
                       bold: true,
-                      margin: [0, 10, 0, 0],
+                      margin: 3,
                     },
+                    {
+                      text: 'Fallas',
+                      fillColor: '#8F141B',
+                      color: 'white',
+                      bold: true,
+                      margin: 3,
+                    },
+                    {
+                      text: 'Nota',
+                      fillColor: '#8F141B',
+                      color: 'white',
+                      bold: true,
+                      margin: 3,
+                    },
+                    {
+                      text: 'Fallas',
+                      fillColor: '#8F141B',
+                      color: 'white',
+                      bold: true,
+                      margin: 3,
+                    },
+                    '',
+                    '',
                   ],
                   ...this.arreglo60.map((row: any[]) =>
                     row.map((cell: { text: any }) => ({

@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { ReporteService } from './services/reporte.service';
+import { ReporteGeneralService } from './services/reporte-general.service';
 
 @Component({
   selector: 'app-root',
@@ -788,9 +789,64 @@ export class AppComponent {
     },
   ];
 
-  constructor(public reporteService: ReporteService) {}
+  dataGeneral: any = [
+    {
+      per_email: 'daniela.alarcon@usco.edu.co',
+      codigo: '20212201591',
+      nombre: 'BERDUGO CALDERON ANGELA',
+      notas: [4.5],
+      fallas: [0],
+      definitiva: 1.8,
+      mac_codigo: '4382046',
+      mac_nota: null,
+      mac_definitiva: null,
+      perdio_fallas: false,
+      cun_fallas: 0,
+      cur_cierre: 1,
+      cur_grabado: 0,
+    },
+    {
+      per_email: 'daniela.alarcon@usco.edu.co',
+      codigo: '20212201591',
+      nombre: 'GERRERO CÓRODOBA JOHN',
+      notas: [4.5, 4.2],
+      fallas: [0, 0],
+      definitiva: 1.8,
+      mac_codigo: '4382046',
+      mac_nota: null,
+      mac_definitiva: null,
+      perdio_fallas: false,
+      cun_fallas: 0,
+      cur_cierre: 1,
+      cur_grabado: 0,
+    },
+    {
+      per_email: 'daniela.alarcon@usco.edu.co',
+      codigo: '20212201591',
+      nombre: 'EMILLITO SEPULVEDA',
+      notas: [4.5, 4.2, 4.1],
+      fallas: [0, 0, 1],
+      definitiva: 1.8,
+      mac_codigo: '4382046',
+      mac_nota: null,
+      mac_definitiva: null,
+      perdio_fallas: false,
+      cun_fallas: 0,
+      cur_cierre: 1,
+      cur_grabado: 0,
+    },
+  ];
+
+  constructor(
+    public reporteService: ReporteService,
+    public reporteGeneralService: ReporteGeneralService
+  ) {}
 
   generarPdf() {
     this.reporteService.export(this.element, this.data);
+  }
+
+  generarPdfGeneral() {
+    this.reporteGeneralService.export(this.element, this.dataGeneral);
   }
 }
