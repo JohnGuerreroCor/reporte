@@ -8,6 +8,10 @@ import { ReporteGeneralService } from './services/reporte-general.service';
   styleUrls: ['./app.component.css'],
 })
 export class AppComponent {
+  checked = false;
+  indeterminate = false;
+  labelPosition: 'before' | 'after' = 'after';
+  disabled = false;
   title = 'reportenotas';
   element: any = [
     {
