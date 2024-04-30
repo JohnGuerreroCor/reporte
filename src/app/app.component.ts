@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { ReporteService } from './services/reporte.service';
 import { ReporteGeneralService } from './services/reporte-general.service';
+import { CertificadoElectoralPdfService } from './services/certificado-electoral-pdf.service';
 
 @Component({
   selector: 'app-root',
@@ -843,7 +844,8 @@ export class AppComponent {
 
   constructor(
     public reporteService: ReporteService,
-    public reporteGeneralService: ReporteGeneralService
+    public reporteGeneralService: ReporteGeneralService,
+    public certificadoElectoralPdfService:CertificadoElectoralPdfService
   ) {}
 
   generarPdf() {
@@ -853,4 +855,9 @@ export class AppComponent {
   generarPdfGeneral() {
     this.reporteGeneralService.export(this.element, this.dataGeneral);
   }
+
+  generarCertificado() {
+    this.certificadoElectoralPdfService.export(this.element);
+  }
+
 }
